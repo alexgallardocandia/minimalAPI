@@ -20,7 +20,6 @@ public class CreateCurrencyHandler
 
     public async Task<CurrencyDto> Handle(CreateCurrencyCommand command)
     {
-        // Verificar que el código sea único
         var exists = await _context.Currencies
             .AnyAsync(c => c.Code == command.Code);
         

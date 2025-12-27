@@ -4,18 +4,21 @@ public class ApiKeyMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly string _apiKey;
-    private const string HeaderName = "X-API-KEY";
+    private readonly string _headerName;
 
     public ApiKeyMiddleware(RequestDelegate next, IConfiguration config)
     {
         _next = next;
-        _apiKey = config["ApiKey"]
-            ?? throw new InvalidOperationException("API Key not configured");
+
+        _apiKey = config["ApiKey:Value"]
+            ?? throw new InvalidOperationException("API Key value not configured");
+
+        _headerName = config["ApiKey:HeaderName"] ?? "X-API-KEY";
     }
 
     public async Task InvokeAsync(HttpContext context)
     {
-        if (!context.Request.Headers.TryGetValue(HeaderName, out var extractedKey) ||
+        if (!context.Request.Headers.TryGetValue(_headerName, out var extractedKey) ||
             extractedKey != _apiKey)
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;

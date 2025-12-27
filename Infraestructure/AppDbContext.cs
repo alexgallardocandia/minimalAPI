@@ -40,5 +40,15 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Currency>()
             .Property(c => c.RateToBase)
             .HasPrecision(18, 6); // Precisión para decimales
+
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Currency>().HasData(
+            new Currency { Id = 1, Code = "USD", Name = "Dólar Americano", RateToBase = 1.0m },
+            new Currency { Id = 2, Code = "EUR", Name = "Euro", RateToBase = 0.85m },
+            new Currency { Id = 3, Code = "PYG", Name = "Guaraní Paraguayo", RateToBase = 7300m },
+            new Currency { Id = 4, Code = "ARS", Name = "Peso Argentino", RateToBase = 350m },
+            new Currency { Id = 5, Code = "BRL", Name = "Real Brasileño", RateToBase = 5.0m }
+        );
     }
 }

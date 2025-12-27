@@ -388,25 +388,24 @@ currencyGroup.MapPost("/convert", async (
         return Results.Problem($"Error converting currency: {ex.Message}");
     }
 });
-
+var db = app.Services.CreateScope().ServiceProvider.GetRequiredService<AppDbContext>();
 // Inicializar base de datos con datos de ejemplo
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.EnsureCreated();
+// using (var scope = app.Services.CreateScope())
+// {
+//     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+//     db.Database.EnsureCreated();
     
-    // Agregar algunas monedas de ejemplo si la tabla está vacía
-    if (!db.Currencies.Any())
-    {
-        db.Currencies.AddRange(
-            new Currency { Code = "USD", Name = "Dólar Americano", RateToBase = 1.0m },
-            new Currency { Code = "EUR", Name = "Euro", RateToBase = 0.85m },
-            new Currency { Code = "PYG", Name = "Guaraní Paraguayo", RateToBase = 7300m },
-            new Currency { Code = "ARS", Name = "Peso Argentino", RateToBase = 350m },
-            new Currency { Code = "BRL", Name = "Real Brasileño", RateToBase = 5.0m }
-        );
-        await db.SaveChangesAsync();
-    }
-}
-
+//     // Agregar algunas monedas de ejemplo si la tabla está vacía
+//     if (!db.Currencies.Any())
+//     {
+//         db.Currencies.AddRange(
+//             new Currency { Code = "USD", Name = "Dólar Americano", RateToBase = 1.0m },
+//             new Currency { Code = "EUR", Name = "Euro", RateToBase = 0.85m },
+//             new Currency { Code = "PYG", Name = "Guaraní Paraguayo", RateToBase = 7300m },
+//             new Currency { Code = "ARS", Name = "Peso Argentino", RateToBase = 350m },
+//             new Currency { Code = "BRL", Name = "Real Brasileño", RateToBase = 5.0m }
+//         );
+//         await db.SaveChangesAsync();
+//     }
+// }
 app.Run();
